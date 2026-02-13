@@ -8,6 +8,9 @@ export interface Product {
   category: string;
   affiliateLink: string;
   badge?: string;
+  brand: string;
+  rating: number;
+  reviews: number;
 }
 
 export const categories = [
@@ -16,6 +19,7 @@ export const categories = [
   "Fones de Ouvido",
   "Notebooks",
   "Smart TV",
+  "Console e Games",
   "Acessórios",
 ];
 
@@ -30,6 +34,9 @@ export const products: Product[] = [
     category: "Smartphones",
     affiliateLink: "#",
     badge: "Mais Vendido",
+    brand: "Apple",
+    rating: 4.9,
+    reviews: 1250,
   },
   {
     id: "2",
@@ -40,6 +47,9 @@ export const products: Product[] = [
     image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop",
     category: "Smartphones",
     affiliateLink: "#",
+    brand: "Samsung",
+    rating: 4.8,
+    reviews: 840,
   },
   {
     id: "3",
@@ -51,6 +61,9 @@ export const products: Product[] = [
     category: "Fones de Ouvido",
     affiliateLink: "#",
     badge: "Oferta",
+    brand: "Apple",
+    rating: 4.9,
+    reviews: 3200,
   },
   {
     id: "4",
@@ -61,6 +74,9 @@ export const products: Product[] = [
     image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=400&fit=crop",
     category: "Notebooks",
     affiliateLink: "#",
+    brand: "Apple",
+    rating: 4.8,
+    reviews: 156,
   },
   {
     id: "5",
@@ -70,6 +86,9 @@ export const products: Product[] = [
     image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=400&h=400&fit=crop",
     category: "Fones de Ouvido",
     affiliateLink: "#",
+    brand: "Sony",
+    rating: 4.7,
+    reviews: 2100,
   },
   {
     id: "6",
@@ -81,6 +100,36 @@ export const products: Product[] = [
     category: "Smart TV",
     affiliateLink: "#",
     badge: "Destaque",
+    brand: "Samsung",
+    rating: 4.6,
+    reviews: 530,
+  },
+  {
+    id: "9",
+    name: "PlayStation 5 Slim",
+    description: "Edição Digital com SSD de 1TB e controle DualSense",
+    price: "R$ 3.499",
+    originalPrice: "R$ 3.999",
+    image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&h=400&fit=crop",
+    category: "Console e Games",
+    affiliateLink: "#",
+    badge: "Novo",
+    brand: "Sony",
+    rating: 4.9,
+    reviews: 4200,
+  },
+  {
+    id: "10",
+    name: "Nintendo Switch OLED",
+    description: "Tela de 7 polegadas, 64GB de armazenamento",
+    price: "R$ 2.199",
+    originalPrice: "R$ 2.699",
+    image: "https://images.unsplash.com/photo-1578303372217-b7a9af92398f?w=400&h=400&fit=crop",
+    category: "Console e Games",
+    affiliateLink: "#",
+    brand: "Nintendo",
+    rating: 4.8,
+    reviews: 1800,
   },
   {
     id: "7",
@@ -90,6 +139,9 @@ export const products: Product[] = [
     image: "https://images.unsplash.com/photo-1586953208270-767889fa9b0e?w=400&h=400&fit=crop",
     category: "Acessórios",
     affiliateLink: "#",
+    brand: "Apple",
+    rating: 4.7,
+    reviews: 950,
   },
   {
     id: "8",
@@ -100,5 +152,8 @@ export const products: Product[] = [
     image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=400&h=400&fit=crop",
     category: "Notebooks",
     affiliateLink: "#",
+    brand: "Dell",
+    rating: 4.5,
+    reviews: 210,
   },
 ];

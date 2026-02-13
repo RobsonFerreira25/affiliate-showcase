@@ -8,13 +8,13 @@ const HeroSection = () => {
         <div className="mx-auto flex max-w-2xl flex-col items-center gap-4">
           <div className="flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
             <Zap className="h-4 w-4" />
-            As melhores ofertas em eletrônicos
+            Ofertas Reais: Amazon, ML e Shopee
           </div>
           <h1 className="font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl lg:text-6xl">
-            Tech<span className="text-primary">Ofertas</span>
+            QPA — <span className="text-primary">Quem Procura Acha</span>
           </h1>
-          <p className="max-w-lg text-base text-muted-foreground md:text-lg">
-            Os melhores produtos eletrônicos com preços imbatíveis. Clique e aproveite as ofertas selecionadas para você.
+          <p className="max-w-xl text-base text-muted-foreground md:text-lg">
+            Sua central de achados imbatíveis. Os melhores produtos das maiores lojas do Brasil selecionados para você economizar de verdade.
           </p>
         </div>
       </div>
