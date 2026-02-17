@@ -71,7 +71,7 @@ export function BannerCarousel({ onSelectPlatform }: { onSelectPlatform: (platfo
                 <CarouselContent>
                     {BANNERS.map((banner, index) => (
                         <CarouselItem key={index}>
-                            <div className="relative h-[450px] md:h-[550px] w-full overflow-hidden rounded-[2.5rem] md:rounded-[3.5rem] border border-white/10 shadow-3xl bg-black">
+                            <div className="relative h-[clamp(350px,65vh,650px)] w-full overflow-hidden rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] border border-white/10 shadow-3xl bg-black">
                                 {/* Background Image with dynamic parallax-like effect */}
                                 <div
                                     className="absolute inset-0 bg-cover bg-center transition-transform duration-[12000ms] ease-out hover:scale-110 opacity-70"
@@ -81,7 +81,7 @@ export function BannerCarousel({ onSelectPlatform }: { onSelectPlatform: (platfo
                                 <div className={`absolute inset-0 bg-gradient-to-r ${banner.color}`} />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
 
-                                <div className="relative z-10 flex h-full flex-col justify-center p-8 md:p-16 lg:p-24">
+                                <div className="relative z-10 flex h-full flex-col justify-center p-6 md:p-12 lg:p-20 xl:p-28">
                                     <div className="space-y-6 max-w-3xl">
                                         {/* Status Badge */}
                                         <div className="inline-flex items-center gap-3 rounded-full bg-white/10 px-6 py-2.5 text-[10px] md:text-xs font-black uppercase tracking-[0.25em] text-white backdrop-blur-2xl border border-white/20 shadow-xl">
@@ -140,10 +140,10 @@ export function BannerCarousel({ onSelectPlatform }: { onSelectPlatform: (platfo
                     ))}
                 </CarouselContent>
 
-                {/* Modern Navigation */}
-                <div className="absolute bottom-10 right-10 md:bottom-16 md:right-24 flex gap-4 z-30">
-                    <CarouselPrevious className="static h-14 w-14 translate-y-0 bg-black/40 border-white/10 text-white hover:bg-primary hover:border-primary backdrop-blur-2xl rounded-2xl transition-all hover:scale-110 active:scale-90" />
-                    <CarouselNext className="static h-14 w-14 translate-y-0 bg-black/40 border-white/10 text-white hover:bg-primary hover:border-primary backdrop-blur-2xl rounded-2xl transition-all hover:scale-110 active:scale-90" />
+                {/* Modern Navigation - Adjusted position for small screens */}
+                <div className="absolute bottom-6 right-6 md:bottom-12 md:right-16 lg:bottom-16 lg:right-24 flex gap-2 md:gap-4 z-30">
+                    <CarouselPrevious className="static h-10 w-10 md:h-14 md:w-14 translate-y-0 bg-black/40 border-white/10 text-white hover:bg-primary hover:border-primary backdrop-blur-2xl rounded-xl md:rounded-2xl transition-all hover:scale-110 active:scale-90" />
+                    <CarouselNext className="static h-10 w-10 md:h-14 md:w-14 translate-y-0 bg-black/40 border-white/10 text-white hover:bg-primary hover:border-primary backdrop-blur-2xl rounded-xl md:rounded-2xl transition-all hover:scale-110 active:scale-90" />
                 </div>
             </Carousel>
         </div>

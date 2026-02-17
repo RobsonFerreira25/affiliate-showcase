@@ -48,8 +48,8 @@ const Index = () => {
   });
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <main className="container py-6 md:py-10">
-        <section className="mb-12">
+      <main className="mx-auto w-full max-w-[2000px] px-4 sm:px-6 lg:px-10 py-6 md:py-10">
+        <section className="mb-8 md:mb-12">
           <BannerCarousel onSelectPlatform={setPlatform} />
         </section>
 
@@ -89,7 +89,7 @@ const Index = () => {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
               {filtered.map((product: any, i: number) => (
                 <ProductCard key={product.id} product={product} index={i} />
               ))}
