@@ -5,6 +5,7 @@ import CategoryFilter from "@/components/CategoryFilter";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Loader2, ShoppingBag } from "lucide-react";
+import { BannerCarousel } from "@/components/BannerCarousel";
 
 const PLATFORMS = ["Todos", "Amazon", "Mercado Livre", "Shopee"];
 
@@ -47,9 +48,11 @@ const Index = () => {
   });
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <HeroSection />
+      <main className="container py-6 md:py-10">
+        <section className="mb-12">
+          <BannerCarousel onSelectPlatform={setPlatform} />
+        </section>
 
-      <main className="container py-8 md:py-12">
         <div className="mb-10 flex flex-col gap-6">
           <div className="flex flex-col gap-3">
             <h2 className="text-sm font-semibold uppercase tracking-wider text-primary">Plataformas</h2>
