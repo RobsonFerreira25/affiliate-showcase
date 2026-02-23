@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { LogIn, LogOut, PackagePlus, Upload, Loader2, Home, UserPlus } from "lucide-react";
+import { LogIn, LogOut, PackagePlus, Upload, Loader2, Home, UserPlus, Edit, Trash2 } from "lucide-react";
 import { categories } from "@/data/products";
 
 const PLATFORMS = ["Amazon", "Mercado Livre", "Shopee"];
@@ -18,6 +18,8 @@ const Admin = () => {
     const [uploading, setUploading] = useState(false);
     const [authEmail, setAuthEmail] = useState("");
     const [authPassword, setAuthPassword] = useState("");
+    const [products, setProducts] = useState<any[]>([]);
+    const [editingId, setEditingId] = useState<string | null>(null);
     const navigate = useNavigate();
 
     // Form state
@@ -35,14 +37,30 @@ const Admin = () => {
         reviews: 0
     });
 
+    const fetchProducts = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('products')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+            setProducts(data || []);
+        } catch (error: any) {
+            toast.error("Erro ao carregar produtos: " + error.message);
+        }
+    };
+
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
             setSession(session);
             setLoading(false);
+            if (session) fetchProducts();
         });
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session);
+            if (session) fetchProducts();
         });
 
         return () => subscription.unsubscribe();
@@ -111,13 +129,25 @@ const Admin = () => {
         e.preventDefault();
         try {
             setLoading(true);
-            const { error } = await supabase
-                .from('products')
-                .insert([formData]);
 
-            if (error) throw error;
+            if (editingId) {
+                const { error } = await supabase
+                    .from('products')
+                    .update(formData)
+                    .eq('id', editingId);
 
-            toast.success("Produto cadastrado com sucesso!");
+                if (error) throw error;
+                toast.success("Produto atualizado com sucesso!");
+            } else {
+                const { error } = await supabase
+                    .from('products')
+                    .insert([formData]);
+
+                if (error) throw error;
+                toast.success("Produto cadastrado com sucesso!");
+            }
+
+            setEditingId(null);
             setFormData({
                 name: "",
                 description: "",
@@ -131,6 +161,45 @@ const Admin = () => {
                 rating: 5.0,
                 reviews: 0
             });
+            fetchProducts();
+        } catch (error: any) {
+            toast.error(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleEdit = (product: any) => {
+        setEditingId(product.id);
+        setFormData({
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            original_price: product.original_price || "",
+            image_url: product.image_url,
+            category: product.category,
+            affiliate_link: product.affiliate_link,
+            brand: product.brand,
+            platform: product.platform,
+            rating: product.rating,
+            reviews: product.reviews
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!confirm("Tem certeza que deseja excluir este achado?")) return;
+
+        try {
+            setLoading(true);
+            const { error } = await supabase
+                .from('products')
+                .delete()
+                .eq('id', id);
+
+            if (error) throw error;
+            toast.success("Produto excluído!");
+            fetchProducts();
         } catch (error: any) {
             toast.error(error.message);
         } finally {
@@ -226,12 +295,40 @@ const Admin = () => {
 
                 <Card className="border-border bg-card">
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <PackagePlus className="h-5 w-5 text-primary" /> Cadastrar Achado
+                        <CardTitle className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-2">
+                                <PackagePlus className="h-5 w-5 text-primary" />
+                                {editingId ? "Editar Achado" : "Cadastrar Achado"}
+                            </div>
+                            {editingId && (
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => {
+                                        setEditingId(null);
+                                        setFormData({
+                                            name: "",
+                                            description: "",
+                                            price: "",
+                                            original_price: "",
+                                            image_url: "",
+                                            category: categories[1],
+                                            affiliate_link: "",
+                                            brand: "",
+                                            platform: PLATFORMS[0],
+                                            rating: 5.0,
+                                            reviews: 0
+                                        });
+                                    }}
+                                >
+                                    Cancelar Edição
+                                </Button>
+                            )}
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                            {/* ... (campos do formulário permanecem iguais) */}
                             <div className="flex flex-col gap-2">
                                 <label className="text-sm font-medium">Nome do Produto</label>
                                 <Input
@@ -333,11 +430,64 @@ const Admin = () => {
                             </div>
 
                             <Button type="submit" disabled={loading || uploading} className="md:col-span-2">
-                                {loading ? "Salvando..." : "Cadastrar Achado"}
+                                {loading ? "Salvando..." : (editingId ? "Salvar Alterações" : "Cadastrar Achado")}
                             </Button>
                         </form>
                     </CardContent>
                 </Card>
+
+                <div className="mt-12">
+                    <h2 className="mb-6 font-display text-2xl font-bold">Gerenciar Achados</h2>
+                    <div className="grid grid-cols-1 gap-4">
+                        {products.length === 0 ? (
+                            <Card className="border-dashed border-border p-12 text-center text-muted-foreground">
+                                Nenhum produto cadastrado.
+                            </Card>
+                        ) : (
+                            products.map((product) => (
+                                <Card key={product.id} className="border-border bg-card hover:border-primary/50 transition-colors">
+                                    <div className="flex flex-col md:flex-row p-4 gap-4 items-center">
+                                        <img
+                                            src={product.image_url}
+                                            alt={product.name}
+                                            className="h-20 w-20 rounded-lg object-cover border border-border"
+                                        />
+                                        <div className="flex-1 text-center md:text-left">
+                                            <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-1">
+                                                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-primary/10 text-primary">
+                                                    {product.platform}
+                                                </span>
+                                                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-white/10 text-white/70">
+                                                    {product.category}
+                                                </span>
+                                            </div>
+                                            <h3 className="font-bold line-clamp-1">{product.name}</h3>
+                                            <p className="text-sm font-bold text-primary">{product.price}</p>
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => handleEdit(product)}
+                                                className="border-primary/30 hover:bg-primary/20"
+                                            >
+                                                <Edit className="h-4 w-4 mr-1" /> Editar
+                                            </Button>
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => handleDelete(product.id)}
+                                                className="border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive hover:border-destructive"
+                                            >
+                                                <Trash2 className="h-4 w-4 mr-1" /> Excluir
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </Card>
+                            ))
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );
