@@ -5,7 +5,8 @@ import CategoryFilter from "@/components/CategoryFilter";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Loader2, ShoppingBag } from "lucide-react";
-import { BannerCarousel } from "@/components/BannerCarousel";
+
+import Logo from "@/components/Logo";
 
 const PLATFORMS = ["Todos", "Amazon", "Mercado Livre", "Shopee"];
 
@@ -49,10 +50,6 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto w-full max-w-[2000px] px-4 sm:px-6 lg:px-10 py-6 md:py-10">
-        <section className="mb-8 md:mb-12">
-          <BannerCarousel onSelectPlatform={setPlatform} />
-        </section>
-
         <div className="mb-10 flex flex-col gap-6">
           <div className="flex flex-col gap-3">
             <h2 className="text-sm font-semibold uppercase tracking-wider text-primary">Plataformas</h2>
@@ -112,10 +109,15 @@ const Index = () => {
         )}
       </main>
 
-      <footer className="border-t border-border py-10 text-center text-sm text-muted-foreground">
-        <div className="container">
-          <p className="font-display text-lg font-bold text-foreground mb-2">QPA — Quem Procura Acha</p>
-          © {new Date().getFullYear()} — Todos os direitos reservados.
+      <footer className="border-t border-border py-12 text-center text-sm text-muted-foreground bg-card/30">
+        <div className="container flex flex-col items-center gap-4">
+          <Logo className="scale-90" />
+          <p className="max-w-xs opacity-70">
+            A sua vitrine inteligente de produtos que realmente resolvem o seu dia a dia.
+          </p>
+          <div className="mt-4 pt-4 border-t border-border/50 w-full max-w-md">
+            © {new Date().getFullYear()} Wiiki_Produtos_ — Todos os direitos reservados.
+          </div>
         </div>
       </footer>
     </div>

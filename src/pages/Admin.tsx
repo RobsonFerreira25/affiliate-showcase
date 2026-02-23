@@ -9,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { LogIn, LogOut, PackagePlus, Upload, Loader2, Home, UserPlus, Edit, Trash2 } from "lucide-react";
 import { categories } from "@/data/products";
+import Logo from "@/components/Logo";
 
 const PLATFORMS = ["Amazon", "Mercado Livre", "Shopee"];
 
@@ -220,7 +221,10 @@ const Admin = () => {
             <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
                 <Card className="w-full max-w-md border-border bg-card">
                     <CardHeader>
-                        <CardTitle className="text-2xl font-bold text-center">Admin QPA</CardTitle>
+                        <div className="flex justify-center mb-4">
+                            <Logo />
+                        </div>
+                        <CardTitle className="text-2xl font-bold text-center">Wiiki_Produtos_</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <Tabs defaultValue="login" className="w-full">
@@ -287,7 +291,10 @@ const Admin = () => {
         <div className="min-h-screen bg-background p-4 md:p-8">
             <div className="mx-auto max-w-4xl">
                 <div className="mb-8 flex items-center justify-between">
-                    <h1 className="font-display text-3xl font-bold">Painel QPA</h1>
+                    <div className="flex items-center gap-3">
+                        <Logo showText={false} className="scale-75" />
+                        <h1 className="font-display text-3xl font-bold italic">Wiiki_Produtos_</h1>
+                    </div>
                     <Button variant="outline" onClick={signOut} className="flex items-center gap-2">
                         <LogOut className="h-4 w-4" /> Sair
                     </Button>
