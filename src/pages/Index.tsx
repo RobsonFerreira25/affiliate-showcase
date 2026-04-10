@@ -6,7 +6,20 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Loader2, ShoppingBag } from "lucide-react";
 
-import Logo from "@/components/Logo";
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  original_price?: string;
+  image_url: string;
+  category: string;
+  affiliate_link: string;
+  brand: string;
+  platform?: string;
+  rating: number;
+  reviews: number;
+}
 
 const PLATFORMS = ["Todos", "Amazon", "Mercado Livre", "Shopee"];
 
@@ -24,7 +37,7 @@ const Index = () => {
 
       if (error) throw error;
 
-      return data.map((p: any) => ({
+      return data.map((p: Product) => ({
         id: p.id,
         name: p.name,
         description: p.description,
@@ -44,22 +57,24 @@ const Index = () => {
 
   const filtered = products.filter((p: any) => {
     const categoryMatch = category === "Todos" || p.category === category;
-    const platformMatch = platform === "Todos" || p.platform === platform;
+    const platformMatch = platform === "Todos" || (p as any).platform === platform;
     return categoryMatch && platformMatch;
   });
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <main className="mx-auto w-full max-w-[2000px] px-4 sm:px-6 lg:px-10 py-6 md:py-10">
-        <div className="mb-10 flex flex-col gap-6">
-          <div className="flex flex-col gap-3">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-primary">Plataformas</h2>
-            <div className="flex flex-wrap gap-2">
+    <>
+      <HeroSection />
+      
+      <main id="products" className="mx-auto w-full max-w-[2000px] px-4 sm:px-6 lg:px-10 py-10 md:py-16">
+        <div id="categories" className="mb-12 flex flex-col gap-8">
+          <div className="flex flex-col gap-4">
+            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-primary/60">Plataformas</h2>
+            <div className="flex flex-wrap gap-3">
               {PLATFORMS.map((p) => (
                 <button
                   key={p}
                   onClick={() => setPlatform(p)}
-                  className={`flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-all ${platform === p
-                    ? "border-primary bg-primary/10 text-primary shadow-[0_0_15px_rgba(var(--primary),0.2)]"
+                  className={`flex items-center gap-2 rounded-none border-2 px-6 py-2.5 text-xs font-bold uppercase tracking-wider transition-all shadow-[4px_4px_0px_0px_hsl(var(--primary)/0.15)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] ${platform === p
+                    ? "border-primary bg-primary text-primary-foreground shadow-[4px_4px_0px_0px_hsl(var(--primary)/0.3)]"
                     : "border-border bg-card hover:border-primary/40"
                     }`}
                 >
@@ -70,8 +85,8 @@ const Index = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-3">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-primary">Categorias</h2>
+          <div className="flex flex-col gap-4">
+            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-primary/60">Categorias</h2>
             <CategoryFilter selected={category} onSelect={setCategory} />
           </div>
         </div>
@@ -81,25 +96,25 @@ const Index = () => {
             <Loader2 className="h-10 w-10 animate-spin text-primary" />
           </div>
         ) : error ? (
-          <div className="py-20 text-center text-destructive">
+          <div className="py-20 text-center text-destructive border-2 border-destructive/20 bg-destructive/5 p-8">
             Erro ao carregar achados. Tente novamente mais tarde.
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 mb-12">
               {filtered.map((product: any, i: number) => (
-                <ProductCard key={product.id} product={product} index={i} />
+                <ProductCard key={(product as any).id} product={product as any} index={i} />
               ))}
             </div>
 
             {filtered.length === 0 && (
-              <div className="py-24 text-center">
-                <p className="text-xl font-medium text-muted-foreground">
+              <div className="py-24 text-center border-2 border-dashed border-border p-12 bg-card/50">
+                <p className="text-xl font-bold text-muted-foreground uppercase tracking-tight">
                   Nenhum achado encontrado para os filtros selecionados.
                 </p>
                 <button
                   onClick={() => { setCategory("Todos"); setPlatform("Todos"); }}
-                  className="mt-4 text-primary hover:underline"
+                  className="mt-6 text-primary hover:underline font-bold uppercase text-sm tracking-widest"
                 >
                   Limpar todos os filtros
                 </button>
@@ -108,19 +123,7 @@ const Index = () => {
           </>
         )}
       </main>
-
-      <footer className="border-t border-border py-12 text-center text-sm text-muted-foreground bg-card/30">
-        <div className="container flex flex-col items-center gap-4">
-          <Logo className="scale-90" />
-          <p className="max-w-xs opacity-70">
-            A sua vitrine inteligente de produtos que realmente resolvem o seu dia a dia.
-          </p>
-          <div className="mt-4 pt-4 border-t border-border/50 w-full max-w-md">
-            © {new Date().getFullYear()} Wiiki_Produtos_ — Todos os direitos reservados.
-          </div>
-        </div>
-      </footer>
-    </div>
+    </>
   );
 };
 

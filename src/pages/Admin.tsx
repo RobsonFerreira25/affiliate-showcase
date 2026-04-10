@@ -210,7 +210,7 @@ const Admin = () => {
 
     if (loading && !session) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-background">
+            <div className="flex items-center justify-center py-20">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
         );
@@ -218,27 +218,28 @@ const Admin = () => {
 
     if (!session) {
         return (
-            <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
-                <Card className="w-full max-w-md border-border bg-card">
-                    <CardHeader>
-                        <div className="flex justify-center mb-4">
-                            <Logo />
+            <div className="flex flex-col items-center justify-center py-12 px-4">
+                <Card className="w-full max-w-md border-border bg-card shadow-xl rounded-none">
+                    <CardHeader className="text-center">
+                        <div className="flex justify-center mb-6">
+                            <Logo className="scale-125" />
                         </div>
-                        <CardTitle className="text-2xl font-bold text-center">Wiiki_Produtos_</CardTitle>
+                        <CardTitle className="text-3xl font-bold uppercase tracking-tighter">Área Administrativa</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <Tabs defaultValue="login" className="w-full">
-                            <TabsList className="grid w-full grid-cols-2 mb-4">
-                                <TabsTrigger value="login">Entrar</TabsTrigger>
-                                <TabsTrigger value="register">Criar Conta</TabsTrigger>
+                            <TabsList className="grid w-full grid-cols-2 mb-8 bg-muted/50 p-1 rounded-none border border-border">
+                                <TabsTrigger value="login" className="rounded-none data-[state=active]:bg-primary data-[state=active]:text-white">Entrar</TabsTrigger>
+                                <TabsTrigger value="register" className="rounded-none data-[state=active]:bg-primary data-[state=active]:text-white">Criar Conta</TabsTrigger>
                             </TabsList>
 
-                            <TabsContent value="login">
+                            <TabsContent value="login" className="mt-0">
                                 <form onSubmit={handleLogin} className="flex flex-col gap-4">
                                     <Input
                                         type="email"
                                         placeholder="E-mail"
                                         required
+                                        className="rounded-none"
                                         value={authEmail}
                                         onChange={(e) => setAuthEmail(e.target.value)}
                                     />
@@ -246,21 +247,23 @@ const Admin = () => {
                                         type="password"
                                         placeholder="Senha"
                                         required
+                                        className="rounded-none"
                                         value={authPassword}
                                         onChange={(e) => setAuthPassword(e.target.value)}
                                     />
-                                    <Button type="submit" disabled={loading} className="w-full">
-                                        {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogIn className="h-4 w-4 mr-2" />} Entrar
+                                    <Button type="submit" disabled={loading} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold uppercase tracking-widest h-12 rounded-none shadow-[4px_4px_0px_0px_hsl(var(--primary)/0.3)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all mt-4">
+                                        {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogIn className="h-5 w-5 mr-3" />} Acessar Painel
                                     </Button>
                                 </form>
                             </TabsContent>
 
-                            <TabsContent value="register">
+                            <TabsContent value="register" className="mt-0">
                                 <form onSubmit={handleRegister} className="flex flex-col gap-4">
                                     <Input
                                         type="email"
                                         placeholder="E-mail"
                                         required
+                                        className="rounded-none"
                                         value={authEmail}
                                         onChange={(e) => setAuthEmail(e.target.value)}
                                     />
@@ -268,19 +271,22 @@ const Admin = () => {
                                         type="password"
                                         placeholder="Senha (mín. 6 caracteres)"
                                         required
+                                        className="rounded-none"
                                         value={authPassword}
                                         onChange={(e) => setAuthPassword(e.target.value)}
                                     />
-                                    <Button type="submit" disabled={loading} className="w-full">
-                                        {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserPlus className="h-4 w-4 mr-2" />} Criar Conta
+                                    <Button type="submit" disabled={loading} className="w-full bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-widest h-12 rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all mt-4">
+                                        {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserPlus className="h-5 w-5 mr-3" />} Criar minha Conta
                                     </Button>
                                 </form>
                             </TabsContent>
                         </Tabs>
 
-                        <Button variant="ghost" onClick={() => navigate("/")} className="mt-4 w-full">
-                            <Home className="mr-2 h-4 w-4" /> Voltar para o site
-                        </Button>
+                        <div className="mt-8 pt-6 border-t border-border flex justify-center">
+                            <Button variant="ghost" onClick={() => navigate("/")} className="text-xs uppercase tracking-[0.2em] font-bold text-muted-foreground hover:text-primary hover:bg-transparent">
+                                <Home className="mr-2 h-4 w-4" /> Voltar para o Início
+                            </Button>
+                        </div>
                     </CardContent>
                 </Card>
             </div>
@@ -288,15 +294,19 @@ const Admin = () => {
     }
 
     return (
-        <div className="min-h-screen bg-background p-4 md:p-8">
-            <div className="mx-auto max-w-4xl">
-                <div className="mb-8 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <Logo showText={false} className="scale-75" />
-                        <h1 className="font-display text-3xl font-bold italic">Wiiki_Produtos_</h1>
+        <div className="py-10 px-4 md:px-8">
+            <div className="mx-auto max-w-5xl">
+                <div className="mb-12 flex flex-col md:flex-row items-center justify-between gap-6 border-b-2 border-primary/20 pb-8">
+                    <div className="text-center md:text-left">
+                        <h1 className="text-xs font-bold uppercase tracking-[0.4em] text-primary mb-2">Painel de Controle</h1>
+                        <h2 className="font-display text-4xl font-black italic uppercase tracking-tighter">Gerenciar Achados</h2>
                     </div>
-                    <Button variant="outline" onClick={signOut} className="flex items-center gap-2">
-                        <LogOut className="h-4 w-4" /> Sair
+                    <Button 
+                        variant="outline" 
+                        onClick={signOut} 
+                        className="rounded-none border-2 border-destructive/30 text-destructive font-bold uppercase tracking-widest text-xs hover:bg-destructive hover:text-white hover:border-destructive transition-all py-6 px-10"
+                    >
+                        <LogOut className="h-4 w-4 mr-3" /> Finalizar Sessão
                     </Button>
                 </div>
 
